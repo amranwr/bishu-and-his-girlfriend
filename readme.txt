@@ -1,17 +1,1 @@
-test case of 2d array
-1
-1
-0
-1
-0
-1
-0
-0
-0
-1
-1
-1
-0
-1
-0
-1
+https://www.hackerearth.com/practice/algorithms/graphs/depth-first-search/practice-problems/algorithm/bishu-and-his-girlfriend/

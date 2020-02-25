@@ -1,86 +1,44 @@
-class Node:
-    x = None
-    y = None
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+def dfs():
+    x= int(input())
+    v = []
+    adj= dict()
+    for i in range(1,x+1):
+        adj[i] =[]
+        v.append(i)
+    for _ in range(x-1):
+        data = input()
+        temp = data.split(' ')
+        adj[int(temp[0])].append(int(temp[1]))
+    count  = int(input())
+    q = {}
+    for _ in range(count):
+        temp = int(input())
+        q[temp] = False
 
-    def __str__(self):
-        return "" + str(self.x) + " " + str(self.y)
-    def __repr__(self):
-        return 'Point(x=%s, y=%s)' % (self.x, self.y)
-    def __eq__(self, other):
-        if isinstance(other, Node):
-            return self.x == other.x and self.y == other.y
-        return False
+    parent={}
+    for s in v :
+        if s not in parent:
+            parent[s] = None
+            dfsVisit(q,parent , adj , s)
 
-    def __hash__(self):
-        return hash(tuple(sorted(self.__dict__.items())))
+    min_dist =1000000000
+    hold = 1
+    for key , value in q.items():
+        if value == True:
+            if key - 1 < min_dist:
+                hold = key
+                min_dist = key -1
 
-
-def go():
-    start = Node(0, 0)
-    end = Node(3, 3)
-    list = []
-    innerList = []
-    for _ in range(4):
-        for _ in range(4):
-            x = input()
-            innerList.append(x)
-        list.append(innerList)
-        innerList = []
-
-    print(list)
-    parent = {start: None}
-    level = {start: 0}
-    frontier = [start]
-    f = 1
-    flag = False
-    while frontier:
-        next = []
-        temp =[]
-        for item in frontier:
-            temp = construct_nodes(item, len(list) - 1, len(list[0]) - 1)
-            for value in temp:
-                if value not in level and list[value.x][value.y] == '1':
-                    level[value] = f
-                    parent[value] = item
-                    next.append(value)
-                if value == end:
-                    flag = True
-                    break
-
-        if flag :
-            break
-        frontier = next
-        f += 1
-    print(level[end])
-    print("the path :")
-    shortest_path(parent,start,end)
-
-def shortest_path(parent, src, dest):
-    if src == dest:
-        return
-    else:
-        shortest_path(parent, src, parent[dest])
-        print(dest)
-
-
-def construct_nodes(edge, rows, cols):
-    list = []
-    x = edge.x
-    y = edge.y
-    if valid(x - 1, y, rows, cols):   list.append(Node(x - 1, y))
-    if valid(x + 1, y, rows, cols):   list.append(Node(x + 1, y))
-    if valid(x, y + 1, rows, cols):   list.append(Node(x, y + 1))
-    if valid(x, y - 1, rows, cols):   list.append(Node(x, y - 1))
-    return list
-
-
-def valid(x, y, rows, cols):
-    return (x <= rows) and (x > -1) and (y <= cols) and (y > -1)
+    print(hold)
+def dfsVisit(q,parent,adj,s):
+    for v in adj[s]:
+        if v not in parent:
+            if v in q :
+                q[v]= True
+            parent[v] = s
+            dfsVisit(q,parent,adj,v)
 
 
 if __name__ == '__main__':
-    go()
+    dfs()
